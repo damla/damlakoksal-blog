@@ -25,13 +25,21 @@ module.exports = {
         ],
         externalLinks: [
           {
+            name: `Github`,
+            url: `https://www.github.com/damla`,
+          },
+          {
             name: `Twitter`,
-            url: `https://twitter.com/lekoarts_de`,
+            url: `https://twitter.com/damlakoksal`,
           },
           {
             name: `Instagram`,
-            url: `https://www.instagram.com/lekoarts.de/`,
+            url: `https://www.instagram.com/drinkingmyjava`,
           },
+          {
+            name: `Linkedin`,
+            url: `https://www.linkedin.com/in/damlakoksal`,
+          }
         ],
       },
     },
