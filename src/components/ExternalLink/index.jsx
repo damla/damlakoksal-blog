@@ -6,4 +6,4 @@ const ExternalLink = ({children, ...props}) => (
   </a>
 )
 
-export default ExternalLink
+export default ExternalLink;

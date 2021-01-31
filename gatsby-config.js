@@ -5,8 +5,24 @@ require(`dotenv`).config({
 const shouldAnalyseBundle = process.env.ANALYSE_BUNDLE
 
 module.exports = {
-  siteMetadata: {
-    siteTitleAlt: `Minimal Blog - Gatsby Theme`,
+    siteMetadata: {
+      // Used for the title template on pages other than the index site
+      siteTitle: `Damla Köksal`,
+      // Default title of the page
+      siteTitleAlt: `Damla Köksal's Personal Website`,
+      // Can be used for e.g. JSONLD
+      siteHeadline: `Damla Köksal's Personal Website`,
+      // Will be used to generate absolute URLs for og:image etc.
+      siteUrl: `https://damlakoksal.com`,
+      // Used for SEO
+      siteDescription: `Damla Köksal's Personal Website.`,
+      // Will be set on the <html /> tag
+      siteLanguage: `en`,
+      // Used for og:image and must be placed inside the `static` folder
+      siteImage: `/banner.jpg`,
+      // Twitter Handle
+      author: `@damlakoksal`,
+
   },
   plugins: [
     {
