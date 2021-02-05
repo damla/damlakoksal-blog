@@ -1,0 +1,559 @@
+---
+title: Creating a Sticky NavBar with an Announcement Bar in ReactJS
+date: 2020-11-15
+description: Defence Against the Dark Arts (abbreviated as DADA) is a subject taught at Hogwarts School of Witchcraft and Wizardry and Ilvermorny School of Witchcraft and Wizardry.
+tags:
+  - ReactJS
+---
+## 📌 Introduction
+
+As a result of the increased access to internet and the impacts of Covid-19 pandemic, the number of people who prefer shopping online rose gradually over the last year. This situation lead to an upward trend in the demand for the development of e-commerce websites as shown in the graph below from [Google Trends.](https://trends.google.com/)
+<br/>
+<div style="display:flex; align-items:center;flex-direction:column;">
+<img src="https://dev-to-uploads.s3.amazonaws.com/i/km173ko8vjlscsg7fo1o.png" width="800" height="200"/>
+<a href="https://trends.google.com/trends/explore?q=E-commerce%20website&geo=US">Fig.1 - Trend of "E-Commerce Website" term by Google Trends</a>
+</div>
+<br/>
+Thus, I've decided to write this post about two popular components used together in e-commerce applications; the announcement bar and the sticky(or fixed) navigation bar. Furthermore, I've planned to use a navigation bar with a transparent background, which is popular especially in these days.
+
+
+## 💻 Hands On
+
+Before starting, I want to emphasize that this article is mainly focusing on how to create a sticky navigation bar with an announcement bar. My source code I based this article on can be found in the Github link below. I will explain all steps in detail and at the end, our react application is going to look like [this.](https://damla.github.io/announcement-navbar-react/) For the further questions, I will try to respond in the comments section.
+<div style="display:flex;justify-content:center">
+<div style="display:flex;flex-direction:column;justify-content:center;min-height:15vh;max-width:500px;border:solid 1px #ececec; border-radius:3px;padding:0 15px;">
+        <div style="display: flex;align-items: center;">
+        <svg style="align-self: center;margin-right:3px;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>&nbsp;
+        <span style="font-size: 1.5rem;"><a href="https://github.com/damla">damla</a>&nbsp;/&nbsp;<a href="https://github.com/damla/announcement-navbar-react">announcement-navbar-react</a></span>
+        </div>
+        <span>Announcement bar and sticky navigation bar done with Sass and ReactJS.</span>
+</div>
+</div>
+
+### Step 1: create-react-app
+
+Let's create a new react application by using create-react-app.
+> ⚠️ Before starting, [Node.js](https://nodejs.org/en/) has to be installed on your computer.
+
+```bash
+# create a folder named "tutorial"
+mkdir tutorial 
+
+# change current directory to the folder "tutorial"
+cd tutorial
+
+# create a react app named "announcementbar-and-navbar"
+npx create-react-app announcementbar-and-navbar
+```
+
+> ℹ️ Are you new to create-react-app? You can get start from [here.](https://create-react-app.dev/docs/getting-started)
+
+
+### 📦 Step 2: Node Packages
+
+The packages used in the project are completely optional, but I explained all of the steps assuming you have them. Therefore, it will be better to use them.
+
+[Sass](https://sass-lang.com) is used as css extension language. I preferred to use [LibSass](https://sass-lang.com/libsass) with version 4.13.1. To add the node package of it, both [yarn](https://yarnpkg.com) and [npm](https://www.npmjs.com) commands written below:
+
+```bash
+# add in yarn
+yarn add node-sass@4.13.1
+
+# add in npm
+npm install node-sass@4.13.1 --save
+```
+
+Second package we are going to add is [classnames](https://www.npmjs.com/package/classnames), which is a JS utility to join classNames together conditionally.
+
+```bash
+# add in yarn
+yarn add classnames
+
+# add in npm
+npm install classnames --save
+```
+
+> ⚠️ After adding the packages, run the project to check if everything is okay.
+
+```bash
+# run in yarn
+yarn start
+
+# run in npm
+npm start
+```
+
+You should see a page like this:
+<br/>
+<div style="display:flex; align-items:center;flex-direction:column;">
+<img alt="create-react-page" src="https://dev-to-uploads.s3.amazonaws.com/i/nzlnpur521fwkhu607cl.png" width="800" height="400"/>
+</div>
+<br/>
+
+### 📝 Step 3: Creating the Folder Structure
+
+In order to simplify things for the purposes of this project, we will use the folder structure as shown below:
+
+```bash
+src
+   |-- components
+   |   |-- announcement
+   |   |   |-- announcement.component.jsx
+   |   |   |-- announcement.styles.scss
+   |   |
+   |   |-- navbar
+   |   |   |-- navbar.component.jsx
+   |   |   |-- navbar.styles.scss
+   |
+   |-- App.jsx   
+   |-- App.scss
+   |-- App.test.js
+   |-- index.css
+   |-- index.js
+   |-- logo.svg
+   |-- reportWebVitals.js
+   |-- setupTests.js
+```
+
+To obtain this folder structure;
+
+> 1. Change App.**css** to App.**scss** and App.**js** to App.**jsx**. Fix the import in **App.jsx** as `import './App.scss'`
+
+> 2. Add a folder named **components** to put our components in it.
+
+> 3. Create **announcement** and **navbar** folders under the **components** folder.
+
+> 4. Add **announcement.component.jsx** and **announcement.styles.scss** under **announcement** folder.
+
+> 5. Add **navbar.component.jsx** and **navbar.styles.scss** under **navbar** folder.
+
+### 💄 Step 4: Make Up
+
+After these steps, open index.css file and change the css with the lines below. Don't forget that index.css has a global scope therefore, it will be reachable from all components.
+
+```css
+/* Line 1 */
+html {
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+  margin: 0;
+  padding: 0;
+}
+/* Line 11 */
+
+a {
+  color: black;
+  text-decoration: none;
+}
+
+a:hover {
+  opacity: 0.7;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+}
+```
+<center>index.css</center>
+
+> ℹ️ To understand the lines between 1 to 11 please take a look at [universal box sizing with inheritance.](https://css-tricks.com/box-sizing/#universal-box-sizing-with-inheritance)
+
+> ℹ️ If we add <mark>an elements</mark> to the DOM, links' color will be black and on hover event, their opacity will be changed by the help of the css we wrote. Also, they won't have underline.
+
+### 🛠 Step 5: Getting Started to Components
+
+Let's start with App.jsx and get deeper into other components on the way. Firstly, I will create a container which fills the entire page.
+
+
+  ```jsx
+// import the style file
+import "./App.scss";
+
+export default function App() {
+  // add a div with a container class
+  return (
+      <div className="container"></div>
+  );
+}
+```
+<center>App.jsx</center>
+<br/>
+
+```scss
+.container {
+  min-height: 100vh;
+  background-color: bisque;
+}
+```
+<center>App.scss</center>
+
+And the result will be like this:
+<br/>
+<div style="display:flex; align-items:center;flex-direction:column;">
+<img alt="empty-react-page" src="https://dev-to-uploads.s3.amazonaws.com/i/3px0uimewrdjjesm05k7.png" width="550" height="400"/>
+</div>
+<br/>
+
+To add an announcement bar at the top of the page, an Announcement component needs to be created.
+
+```jsx
+// import the style file
+import "./announcement.styles.scss";
+
+// create a Announcement component with a children prop parameter
+export default function Announcement({ children }) {
+  return <div className="announcement-bar-container">{children}</div>;
+}
+```
+<center>announcement.component.jsx</center>
+<br/>
+
+```scss
+.announcement-bar-container {
+  background-color: #2c2e2f;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.2rem 1.5rem;
+
+  /* because of the dark background, the color changed to white */
+  a {
+    color: white;
+    line-height: 30px;
+  }
+}
+```
+<center>announcement.styles.scss</center>
+
+> ℹ️ [Flexbox](https://css-tricks.com/snippets/css/a-guide-to-flexbox/) is used to set the layout of announcement bar.
+
+> ℹ️ Parent of the announcement, which is App component in this case, will pass the children of it as a prop. [Take a 👀]
+(https://reactjs.org/docs/composition-vs-inheritance.html)
+
+Now, let's implement <mark>Announcement component</mark> into <mark>App component.</mark>
+
+```jsx
+// import Announcement component
+import Announcement from "./components/announcement/announcement.component";
+import "./App.scss";
+
+export default function App() {
+  // add Announcement component with children
+  return (
+    <div className="container">
+      <Announcement>
+        <a href="mailto:me@damlakoksal.com">me@damlakoksal.com</a>
+        <a href="tel:+902122222222">+90 (212) 222 22 22</a>
+      </Announcement>
+    </div>
+  );
+}
+```
+<center>App.jsx</center>
+
+
+And, our app will look like this:
+<br/>
+<div style="display:flex; align-items:center;flex-direction:column;">
+<img alt="react-page" src="https://dev-to-uploads.s3.amazonaws.com/i/pn6o9elgekghkzxvbb7j.png" width="550" height="400"/>
+</div>
+<br/>
+
+###🧗🏼‍♀️ Step 6: Smooth Start to Navbar Component
+
+At the beginning, our Navbar will neither be fixed nor have a transparent background. We will add them step by step to understand it better. At the end of Step 6, Navbar component is going to look like below:
+
+<br/>
+<div style="display:flex; align-items:center;flex-direction:column;">
+<img alt="react-page" src="https://dev-to-uploads.s3.amazonaws.com/i/zz1l3xao2qopmefp9hsz.png" width="550" height="400"/>
+</div>
+<br/>
+
+So, I planned our elements as shown below:
+
+<br/>
+<div style="display:flex; align-items:center;flex-direction:column;">
+<img alt="react-page" src="https://dev-to-uploads.s3.amazonaws.com/i/oxrk3l6qfgymzrswxidp.png" width="550" height="400"/>
+</div>
+<br/>
+
+Now, we have to implement the elements planned above into <mark>Navbar component.</mark>
+
+```jsx
+import "./navbar.styles.scss";
+
+import logo from "./logo.svg";
+
+export default function Navbar() {
+  return (
+    <nav className="navbar-container">
+      <div className="link-container link-container__left">
+        <a href="/">test</a>
+        <a href="/">test</a>
+        <a href="/">test</a>
+      </div>
+      <img src={logo} className="logo" alt="logo" width={150} height={75} />
+      <div className="link-container link-container__right">
+        <a href="/">test</a>
+        <a href="/">test</a>
+        <a href="/">test</a>
+      </div>
+    </nav>
+  );
+}
+```
+<center>navbar.component.jsx</center>
+<br/>
+
+```scss
+/* simple mixin to add white background to class  */
+@mixin white-bg {
+  background-color: white;
+  -webkit-box-shadow: 0 4px 8px -8px black;
+  -moz-box-shadow: 0 4px 8px -8px black;
+  box-shadow: 0 4px 8px -8px black;
+}
+
+/* Flexbox is used for the layout.
+ * top is calculated as ( (# of announcement component) * ( height of announcement component) )
+ */
+.navbar-container {
+  @include white-bg;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 1.5rem 10px 1.5rem;
+  align-items: center;
+  z-index: 9;
+  top: calc(1 * (0.4rem + 30px));
+  width: 100%;
+
+  .logo {
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+
+  .link-container {
+    width: 33vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    a {
+      font-weight: 600;
+
+      &:hover {
+        opacity: 0.7;
+      }
+    }
+
+    &__left {
+      padding-right: 3rem;
+    }
+
+    &__right {
+      padding-left: 3rem;
+    }
+  }
+}
+```
+<center>navbar.styles.scss</center>
+
+Next, when the Navbar component is added to App component as shown in the code below, our result will be same with the picture at the beginning of this step. In addition, I've added another container to be able to scroll down in the page.
+
+```jsx
+import Announcement from "./components/announcement/announcement.component";
+import "./App.scss";
+import Navbar from "./components/navbar/navbar.component";
+
+export default function App() {
+  return (
+    <>
+      <div className="container">
+        <Announcement>
+          <a href="mailto:me@damlakoksal.com">me@damlakoksal.com</a>
+          <a href="tel:+902122222222">+90 (212) 222 22 22</a>
+        </Announcement>
+        <Navbar />
+      </div>
+      <div className="container"></div>
+    </>
+  );
+}
+```
+<center>App.jsx</center>
+
+> ℹ️ If you are thinking what the heck is **<\>**, [Take a 👀 at here](https://reactjs.org/docs/fragments.html)
+
+### 💃🏼🕺🏼 Step 7: Last Dance with Navbar Component
+
+As I mentioned at the beginning, the Navbar component has to be transparent and its background color has to be white on hover. For that reason, let's modify our **navbar.styles.scss**.
+
+```scss
+@mixin white-bg {
+  background-color: white;
+  -webkit-box-shadow: 0 4px 8px -8px black;
+  -moz-box-shadow: 0 4px 8px -8px black;
+  box-shadow: 0 4px 8px -8px black;
+}
+
+.navbar-container {
+  // @include white-bg deleted
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 1.5rem 10px 1.5rem;
+  align-items: center;
+  z-index: 9;
+  top: calc(1 * (0.4rem + 30px));
+  width: 100%;
+
+ // hover added with white-bg mixin
+  &:hover {
+    @include white-bg;
+  }
+
+  .logo {
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+
+  .link-container {
+    width: 33vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    a {
+      font-weight: 600;
+
+      &:hover {
+        opacity: 0.7;
+      }
+    }
+
+    &__left {
+      padding-right: 3rem;
+    }
+
+    &__right {
+      padding-left: 3rem;
+    }
+  }
+}
+
+```
+<center>navbar.styles.scss</center>
+
+
+Next, we will set the position of <mark>.navbar-container</mark> to fixed and add a transition. Afterwards, we will create <mark>.scrolled</mark> class.
+
+```scss
+/* other codes */
+.navbar-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 1.5rem 10px 1.5rem;
+  align-items: center;
+  z-index: 9;
+  position: fixed;
+  // position fixed
+  top: calc(1 * (0.4rem + 30px));
+  width: 100%;
+  transition: all 0.1s ease-in;
+  // transition added
+
+  &:hover {
+    @include white-bg;
+  }
+
+  &.scrolled {
+    // css class to activate during scroll event
+    @include white-bg;
+    padding: 5px 25px 5px 25px;
+    top: 0;
+  }
+/* other codes */
+```
+<center>navbar.styles.scss</center>
+
+> ℹ️ <mark>.scrolled</mark> class will give Navbar component a white background with a shadow, smaller padding and fix it to top.
+
+
+It's okay to see your components as shown in below because we didn't add the <mark>.scrolled</mark> class yet.
+
+
+<br/>
+<div style="display:flex; align-items:center;flex-direction:column;">
+<img alt="hover-gif" src="https://dev-to-uploads.s3.amazonaws.com/i/1sgbhq40r8iw9r9jzkqz.gif" width="800" height="400"/>
+</div>
+<br/>
+
+> ⚠️ Don't know what Hooks is? [Take a 👀](https://reactjs.org/docs/hooks-intro.html)
+
+```jsx
+import React, { useLayoutEffect } from "react";
+
+import "./navbar.styles.scss";
+import logo from "../../logo.svg";
+const classNames = require("classnames");
+// import hooks and classNames
+
+export default function Navbar() {
+  const [scrolled, setScrolled] = React.useState(false);
+  // set the state
+
+
+  useLayoutEffect(() => {
+    const handleScroll = () =>
+      window.scrollY > 0 ? setScrolled(true) : setScrolled(false);
+    // if the window is scrolled, set state of scrolled to true
+
+    window.addEventListener("scroll", handleScroll);
+    // add event listener for scroll with the function above
+    
+    return () => window.removeEventListener("scroll", handleScroll);
+    // clear the event
+  }, []);
+  // used useLayoutEffect to mutate the DOM
+
+
+  return (
+    // used classNames to append the className
+    <nav className={classNames("navbar-container", { scrolled: scrolled })}>
+      <div className="link-container link-container__left">
+        <a href="/">test</a>
+        <a href="/">test</a>
+        <a href="/">test</a>
+      </div>
+      <img src={logo} className="logo" alt="logo" width={150} height={75} />
+      <div className="link-container link-container__right">
+        <a href="/">test</a>
+        <a href="/">test</a>
+        <a href="/">test</a>
+      </div>
+    </nav>
+  );
+}
+```
+<center>navbar.component.jsx</center>
+
+What we did here is:
+> 1. Initialize state of <mark>scrolled</mark> to false as default.
+> 2. Implement <mark> useLayoutEffect</mark>. Curious about why useLayoutEffect instead of <mark>useEffect</mark>? [Here](https://blog.logrocket.com/useeffect-vs-uselayouteffect/) is a nice comparison.
+   - Add <mark>handleScroll</mark> function. Set state to true or false according to the condition.
+   - Add <mark>event listener</mark> for scroll event.
+   - Remove event listener.
+> 3. Implement classNames with <mark>scrolled</mark> state. Thus, <mark>.scrolled</mark> class will added or removed according to state value.
+
+## 🎉 Congrats
+
+You made it! Hope you enjoyed while learning it. If you have any questions please let me know.
