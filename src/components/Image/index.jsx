@@ -1,5 +1,5 @@
 import React from 'react'
-import './index.styles.scss'
+
 
 const Image = ({children, ...props}) => (
     <>
