@@ -1,5 +1,5 @@
 # Damla Koksal's Personal Website
 
-- This project is done by using the Gatsby Theme [@lekoarts/gatsby-theme-minimal-blog](https://github.com/LekoArts/gatsby-themes/tree/master/themes/gatsby-theme-minimal-blog)
+![Website Screenshot](/static/damlakoksal.png)
 
-TODO: Implement and use gatsby-images
+- This project is done by using the Gatsby Theme [@lekoarts/gatsby-theme-minimal-blog](https://github.com/LekoArts/gatsby-themes/tree/master/themes/gatsby-theme-minimal-blog)
